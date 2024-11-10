@@ -465,47 +465,30 @@ function extendSelectionDown(editor: Document) {
 function moveToNextWord(editor: Document, visualMode = false) {
   // In Google Docs, Ctrl+ArrowRight moves to the next word
   // use ctrlKey: true to simulate Ctrl key press if in Windows
+  const isMac = /Mac/i.test(navigator.userAgent);
   let packet = {
     key: "ArrowRight",
     code: "ArrowRight",
     keyCode: 39,
     which: 39,
-    ctrlKey: true,
-    shiftKey: false,
-    metaKey: false
-  }
-  if (visualMode) {
-    packet.shiftKey = true;
-  }
-
-  // Detect if the user is on macOS using userAgent
-  const isMac = /Mac/i.test(navigator.userAgent);
-  if (isMac) {
-    packet.metaKey = true;
-    packet.ctrlKey = false;
+    ctrlKey: !isMac,
+    shiftKey: visualMode,
+    metaKey: isMac
   }
 
   simulateNativeEvent(editor.body, "keydown", packet);
 }
 
 function moveToBackWord(editor: Document, visualMode = false) {
+  const isMac = /Mac/i.test(navigator.userAgent);
   let packet = {
     key: "ArrowLeft",
     code: "ArrowLeft",
     keyCode: 37,
     which: 37,
-    ctrlKey: true,
-    shiftKey: false,
-    metaKey: false
-  }
-  if (visualMode) {
-    packet.shiftKey = true;
-  }
-  // Detect if the user is on macOS using userAgent
-  const isMac = /Mac/i.test(navigator.userAgent);
-  if (isMac) {
-    packet.metaKey = true;
-    packet.ctrlKey = false;
+    ctrlKey: !isMac,
+    shiftKey: visualMode,
+    metaKey: isMac
   }
 
   // In Google Docs, Ctrl+ArrowLeft moves to the previous word
